@@ -1,6 +1,7 @@
 import numpy as np
 
 class KFolds():
+    # TODO: Add doc string
     def __init__(self, image_filenames, n_folds=3, test_fraction=0.3, seed=42):
         # Count the number of images
         n_images = len(image_filenames)
@@ -29,6 +30,7 @@ class KFolds():
         self.test_idxs  = idx_perm[n_train:]
 
     def __call__(self):
+        # TODO: Add doc string
         return {
             'train': self.get_training_set(),
             'test': self.get_test_set(),
@@ -37,12 +39,19 @@ class KFolds():
 
 
     def get_training_set(self):
+        '''Returns a list of filenames which have been assigned to the
+           training set.'''
         return self.image_filenames[self.train_idxs]
 
     def get_test_set(self):
+        '''Returns a list of filenames which have been assigned to the
+           test set.'''
         return self.image_filenames[self.test_idxs]
 
     def get_fold(self, n):
+        '''Returns the n-th fold of the dataset. Each fold consists of two
+           lists; the first list contains filenames used for training and the
+           second list contains filenames used for evaluation.'''
         assert isinstance(n, int)
         assert (n >= 0) and (n < self.n_folds)
 

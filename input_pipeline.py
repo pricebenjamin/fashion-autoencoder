@@ -86,15 +86,29 @@ def get_dataset_iterator(
     compute_shape=True):
     '''Creates a tf.data.Iterator from a list of image file paths.
 
-    # TODO: Rewrite
     Args:
-        image_filenames: python list of paths to image files
-        training: bool; if True, the dataset will be shuffled and repeated
-        args: object containing commandline arguments which specify batch size,
-              epochs, parallelization parameters, etc.
+        image_filenames: list of paths to image files, e.g. `/foo/bar/image.png`
+        training: (bool) if True, the dataset will be shuffled and repeated
+                  `num_repeats` times
+        image_type: (str) either 'png' or 'jpeg'; used to specify which
+                    function to use when parsing images
+        num_repeats: (int) number of times to repeat the dataset when
+                     training; i.e., a single pass over the entire iterator
+                     corresponds to `num_repeats` epochs of training
+        batch_size: (int) number of images per batch
+        num_parallel_calls: (int) number of simultaneous calls to the `map_func`
+                            used when calling `map_and_batch`
+        prefetch_buffer_size: (int) number of batches that TensorFlow will
+                              attempt to have generated and cached at any point
+                              in time; new batches will be computed as older
+                              batches are consumed
+        compute_shape: (bool) specifies whether or not the image parser should
+                       know the shape of the parsed image; network architectures
+                       that use dense layers will need to know the input size
+                       upon initialization
 
     Returns:
-        A tf.data.Iterator for iterating over the dataset. Make sure to 
+        A tf.data.Iterator used for iterating over the dataset. Make sure to 
         initialize the iterator before calling its get_next() method.
     '''
 

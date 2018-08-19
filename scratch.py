@@ -40,7 +40,7 @@ training_iterator = get_dataset_iterator(
     training=True,
     image_type='png',
     num_repeats=1,
-    batch_size=32,
+    batch_size=128,
     num_parallel_calls=4,
     prefetch_buffer_size=10,
     compute_shape=True)
@@ -49,9 +49,9 @@ training_iterator = get_dataset_iterator(
 x = training_iterator.get_next()
 
 h2  = tf.layers.flatten(x)
-h1  = tf.layers.dense(h2, 128, activation=tf.nn.leaky_relu)
-h0  = tf.layers.dense(h1,  64, activation=None)
-h1_ = tf.layers.dense(h0, 128, activation=tf.nn.leaky_relu)
+h1  = tf.layers.dense(h2, 2048, activation=tf.nn.leaky_relu)
+h0  = tf.layers.dense(h1,  128, activation=None)
+h1_ = tf.layers.dense(h0, 2048, activation=tf.nn.leaky_relu)
 h2_ = tf.layers.dense(h1_, h2.shape[-1], activation=None)
 
 reconstructed_images = tf.reshape(h2_, tf.shape(x))
@@ -79,7 +79,7 @@ def main():
         step = 0
         while True:
             try:
-                if step % 100 == 0:
+                if step % 10 == 0:
                     _, loss = sess.run([train_op, mse])
                     print('loss = {}'.format(loss))
                 else:
